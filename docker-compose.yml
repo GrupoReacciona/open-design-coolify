@@ -8,7 +8,7 @@ services:
     expose:
       - "7456"
     environment:
-      SERVICE_FQDN_OPEN_DESIGN_7456: ""
+      SERVICE_FQDN_OPEN_DESIGN_7456:
       NODE_ENV: production
       NODE_OPTIONS: ${NODE_OPTIONS:---max-old-space-size=192}
       OD_BIND_HOST: 0.0.0.0
@@ -16,8 +16,11 @@ services:
       OD_PORT: 7456
       OD_WEB_PORT: 7456
       OD_API_TOKEN: ${OD_API_TOKEN:?Set OD_API_TOKEN in Coolify Environment Variables (openssl rand -hex 32)}
+      OD_BASICAUTH_USERS: ${OD_BASICAUTH_USERS:?Set OD_BASICAUTH_USERS in Coolify Environment Variables (htpasswd -nbB user pass)}
       OD_CODEX_SANDBOX: ${OD_CODEX_SANDBOX:-}
     labels:
+      # Declares the Basic Auth middleware. To activate it on the router,
+      # see README.md Step 5 (requires the Coolify-generated router name).
       - "traefik.http.middlewares.od-basicauth.basicauth.users=${OD_BASICAUTH_USERS}"
     volumes:
       - open_design_data:/app/.od
