@@ -14,7 +14,7 @@ Configuración de despliegue de [Open Design](https://github.com/nexu-io/open-de
 
 ---
 
-## Despliegue inicial (5 pasos)
+## Despliegue inicial (4 pasos)
 
 ### Paso 1 — Crear recurso en Coolify
 
@@ -32,7 +32,7 @@ En la pestaña **Domains**, asignar un dominio al servicio `open-design` (p.ej. 
 
 ### Paso 3 — Configurar variables de entorno
 
-En la pestaña **Environment Variables**, añadir:
+En la pestaña **Environment Variables**, añadir estas dos variables **antes de desplegar**:
 
 | Variable | Cómo generarla | Ejemplo del formato |
 |---|---|---|
@@ -43,26 +43,13 @@ En la pestaña **Environment Variables**, añadir:
 >
 > Ejemplo: si `htpasswd` genera `admin:$2y$12$abc`, pega `admin:$$2y$$12$$abc`.
 
+> ℹ️ Coolify no falla si estas variables están vacías — simplemente usará el valor vacío. El servicio arrancará mal configurado. Defínelas **antes** de hacer Deploy.
+
 ### Paso 4 — Desplegar
 
-Haz clic en **Deploy**. El contenedor arrancará, descargará la imagen y estará saludable en ~20 segundos (el healthcheck lo verifica).
+Haz clic en **Deploy**. El contenedor arrancará, descargará la imagen y estará saludable en ~20 segundos.
 
-> ⚠️ **Tras el deploy, el servicio es accesible públicamente hasta que completes el Paso 5.** El API Token (`OD_API_TOKEN`) protege la API, pero la interfaz web queda expuesta. Completa el Paso 5 inmediatamente después.
-
-### Paso 5 — Activar Basic Auth (única vez tras el primer deploy)
-
-El middleware `od-basicauth` está definido pero aún no está asociado al router autogenerado por Coolify. Sigue estos pasos:
-
-1. En el recurso, abre **Edit Compose → Show Deployable Compose**
-2. Busca la label con `traefik.http.routers.<nombre-generado>.rule` — apunta `<nombre-generado>`
-3. En tu fork de este repo (o directamente en el editor de Coolify), añade esta línea al bloque `labels:` del servicio:
-   ```yaml
-   - "traefik.http.routers.<nombre-generado>.middlewares=od-basicauth"
-   ```
-   Sustituyendo `<nombre-generado>` por el valor real (p.ej. `https-0-abc123def456`).
-4. Haz **Redeploy**
-
-A partir de este momento, todos los accesos requieren las credenciales de Basic Auth.
+Coolify (≥ 4.1) aplica automáticamente el middleware `od-basicauth` al router Traefik — no se requiere ningún paso manual adicional.
 
 ---
 
@@ -105,7 +92,7 @@ Este despliegue usa dos capas de protección:
 | Capa | Mecanismo | Descripción |
 |---|---|---|
 | 1 | `OD_API_TOKEN` | El daemon rechaza cualquier llamada API sin token válido. El contenedor no arranca si no está definido. |
-| 2 | Basic Auth (Traefik) | HTTP Basic Auth delante de todo el tráfico, antes de que llegue al daemon. Se activa en el Paso 5. |
+| 2 | Basic Auth (Traefik) | HTTP Basic Auth delante de todo el tráfico, antes de que llegue al daemon. Coolify ≥ 4.1 lo aplica automáticamente al router. |
 
 > ⚠️ Este compose no expone ningún puerto directamente al host (`expose:` en lugar de `ports:`). Todo el tráfico va a través de Traefik. No modifiques esto.
 
