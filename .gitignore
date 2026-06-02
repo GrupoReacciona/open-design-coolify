@@ -1,6 +1,8 @@
 .env
+.env.local
 *.env
 *.env.local
 open_design_data/
+docker-compose.override.yml
 node_modules/
 .DS_Store
