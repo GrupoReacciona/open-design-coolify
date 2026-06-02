@@ -47,6 +47,8 @@ En la pestaña **Environment Variables**, añadir:
 
 Haz clic en **Deploy**. El contenedor arrancará, descargará la imagen y estará saludable en ~20 segundos (el healthcheck lo verifica).
 
+> ⚠️ **Tras el deploy, el servicio es accesible públicamente hasta que completes el Paso 5.** El API Token (`OD_API_TOKEN`) protege la API, pero la interfaz web queda expuesta. Completa el Paso 5 inmediatamente después.
+
 ### Paso 5 — Activar Basic Auth (única vez tras el primer deploy)
 
 El middleware `od-basicauth` está definido pero aún no está asociado al router autogenerado por Coolify. Sigue estos pasos:
