@@ -18,7 +18,7 @@ services:
       OD_API_TOKEN: ${OD_API_TOKEN}
       OD_CODEX_SANDBOX: ${OD_CODEX_SANDBOX:-}
     labels:
-      - "traefik.http.middlewares.od-basicauth.basicauth.users=reacciona:$$2y$$05$$zS84IFvDe9TKIKAR8jCAbuF0XuB7EOIQV4z9NWC5QTznIB5koJqd."
+      - "traefik.http.middlewares.od-basicauth.basicauth.users=reacciona:{SHA}UsqJEKSwGijV9qaSxbZ4hlYHcNY="
     volumes:
       - open_design_data:/app/.od
     read_only: true
