@@ -17,8 +17,6 @@ services:
       OD_WEB_PORT: 7456
       OD_API_TOKEN: ${OD_API_TOKEN}
       OD_CODEX_SANDBOX: ${OD_CODEX_SANDBOX:-}
-    labels:
-      - "traefik.http.middlewares.od-basicauth.basicauth.users=reacciona:{SHA}UsqJEKSwGijV9qaSxbZ4hlYHcNY="
     volumes:
       - open_design_data:/app/.od
     read_only: true
