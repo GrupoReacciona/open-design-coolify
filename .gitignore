@@ -1,0 +1,6 @@
+.env
+*.env
+*.env.local
+open_design_data/
+node_modules/
+.DS_Store
