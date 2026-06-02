@@ -16,12 +16,7 @@ services:
       OD_PORT: 7456
       OD_WEB_PORT: 7456
       OD_API_TOKEN: ${OD_API_TOKEN}
-      OD_BASICAUTH_USERS: ${OD_BASICAUTH_USERS}
       OD_CODEX_SANDBOX: ${OD_CODEX_SANDBOX:-}
-    labels:
-      # Declares the Basic Auth middleware. To activate it on the router,
-      # see README.md Step 5 (requires the Coolify-generated router name).
-      - "traefik.http.middlewares.od-basicauth.basicauth.users=${OD_BASICAUTH_USERS}"
     volumes:
       - open_design_data:/app/.od
     read_only: true
